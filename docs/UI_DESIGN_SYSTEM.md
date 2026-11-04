@@ -1,16 +1,18 @@
-# UI Design System — "Emerald Luxe" (SaaS, light + dark)
+# UI Design System — "Sky-Blue" (SaaS, light + dark)
 
 A single, consistent design system across every page. The product reads as a
-polished, high-end SaaS application: an emerald brand with a gold luxury accent,
-dark emerald mesh showcases, generous whitespace, soft layered shadows, and a
+polished, high-end SaaS application: a sky-blue brand with a bright-sky accent,
+dark navy-blue mesh showcases, generous whitespace, soft layered shadows, and a
 full light **and dark** theme.
 
 > **Direction history (user-requested).** Started as "Sky-Blue editorial", moved
-> to "Modern SaaS (indigo)", now "Emerald Luxe" with a gold accent + dark mode,
-> per the user's request for a high-luxury SaaS look. The absolute product rules
-> are unchanged: **no fabricated stats/activity/testimonials, no AI branding, no
-> monetary features.** The landing conveys premium *feel* through design and
-> honest content — it invents no numbers, logos, or reviews.
+> to "Modern SaaS (indigo)", then "Emerald Luxe", now back to **"Sky-Blue"**
+> (per the supplied `Demo/skillswap-demo.html` reference) — a clean sky-blue
+> identity on cool blue-grey neutrals, with green reserved for success/"teach"
+> and amber for "want/learn" tags. The absolute product rules are unchanged:
+> **no fabricated stats/activity/testimonials, no AI branding, no monetary
+> features.** The landing conveys premium *feel* through design and honest
+> content — it invents no numbers, logos, or reviews.
 
 ## Theming
 
@@ -26,11 +28,11 @@ full light **and dark** theme.
 
 | Role | Token(s) | Usage |
 |---|---|---|
-| Brand | `--brand-50 … --brand-800` (emerald) | primary actions, links, active nav, accents |
-| Partner | `--teal-500/600` | "learn" pills, info |
-| Accent | `--accent-400/500/600` (gold) | hero accent text, gold feature tile, highlights |
-| Signature gradients | `--gradient-brand` (emerald→teal), `--gradient-gold` | buttons, brand mark, CTA |
-| Hero mesh | `--hero-ink` + `--hero-mesh` | dark emerald hero, showcase visual, free band |
+| Brand | `--brand-50 … --brand-800` (sky blue) | primary actions, links, active nav, accents |
+| Partner | `--teal-500/600` (cyan-blue) | info |
+| Accent | `--accent-400/500/600` (bright sky) | hero accent text, feature-tile highlight |
+| Signature gradients | `--gradient-brand` (sky→deep-sky), `--gradient-gold` (sky→bright-sky) | buttons, brand mark, CTA |
+| Hero mesh | `--hero-ink` + `--hero-mesh` | dark navy-blue hero, showcase visual, free band |
 | Surfaces | `--surface`, `--surface-2/3`, `--bg` | cards, page background (per theme) |
 | Text | `--text`, `--text-muted`, `--text-subtle` | copy hierarchy (per theme) |
 | Semantic | `--success/danger/warning/info` (+ `-bg`/`-bd`) | flash, status badges |
@@ -39,14 +41,14 @@ full light **and dark** theme.
 
 External image requests don't survive the dev path-rewriting proxy (same reason
 CSS is inlined). So all "imagery" is **inline and dependency-free**:
-- Page background: faint emerald radial glow + a dot-grid **SVG data URI**
+- Page background: faint sky radial glow + a dot-grid **SVG data URI**
   (`--bg-texture`), fixed attachment.
 - Hero / showcase / free band: layered radial-gradient **mesh** (`--hero-mesh`)
   over `--hero-ink`, plus a subtle **SVG `feTurbulence` grain** overlay (`--noise`).
 
 ## Typography
 
-System sans (`--font-sans`, Inter if present), bold tight headings, `.display`
+System sans (`--font-sans`, Nunito Sans if present), bold tight headings, `.display`
 for hero, `.eyebrow` kickers, `.lede` intros. Scale in `_typography.css`.
 
 ## Components
@@ -91,7 +93,7 @@ Natural, human, specific — "Learn anything by teaching what you know.",
 
 | # | Page | Character |
 |---|---|---|
-| 1 | Landing | dark emerald mesh hero + trust chips + features + how-it-works showcase + principles + "$0 forever" band + FAQ + CTA |
+| 1 | Landing | dark navy-blue mesh hero + trust chips + features + how-it-works showcase + principles + "$0 forever" band + FAQ + CTA |
 | 2–4 | Register / Login / Password reset | centered auth cards |
 | 5 | Member profile | avatar header, stat cards, reviews |
 | 6 | Discovery | filter bar + match-card grid with teach/learn pills |

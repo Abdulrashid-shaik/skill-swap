@@ -7,7 +7,8 @@
   padding: 0.6rem 1.15rem;
   border-radius: var(--radius);
   border: 1px solid transparent;
-  font-size: 0.95rem;
+  font-family: var(--font-label);
+  font-size: 0.98rem;
   font-weight: 600;
   line-height: 1.2;
   text-decoration: none;

@@ -3,8 +3,9 @@
 label {
   display: block;
   margin-bottom: var(--space-2);
+  font-family: var(--font-label);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.94rem;
   color: var(--text);
 }
 

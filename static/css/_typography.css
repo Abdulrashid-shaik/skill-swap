@@ -1,5 +1,6 @@
 /* Type scale — tight, confident, sans. */
 h1, h2, h3, h4 {
+  font-family: var(--font-serif);
   color: var(--text);
   font-weight: 700;
   line-height: 1.2;
@@ -15,8 +16,9 @@ p:last-child { margin-bottom: 0; }
 
 /* Display + lede for hero / page intros */
 .display {
+  font-family: var(--font-serif);
   font-size: clamp(2.25rem, 1.4rem + 3.6vw, 3.75rem);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.05;
   letter-spacing: -0.035em;
   margin-bottom: var(--space-4);
@@ -39,7 +41,8 @@ p:last-child { margin-bottom: 0; }
 
 .eyebrow {
   display: inline-block;
-  font-size: 0.78rem;
+  font-family: var(--font-label);
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;

@@ -19,7 +19,9 @@ main.container { flex: 1 0 auto; padding-top: var(--space-7); padding-bottom: va
   background: var(--hero-ink);
   background-image: var(--gradient-brand);
   color: #fff;
-  font-size: 0.85rem;
+  font-family: var(--font-sketch);
+  font-size: 0.92rem;
+  letter-spacing: 0.01em;
   text-align: center;
 }
 .announce .container {
@@ -50,8 +52,9 @@ main.container { flex: 1 0 auto; padding-top: var(--space-7); padding-bottom: va
   display: inline-flex;
   align-items: center;
   gap: var(--space-3);
-  font-size: 1.15rem;
-  font-weight: 800;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text);
 }
@@ -80,7 +83,8 @@ main.container { flex: 1 0 auto; padding-top: var(--space-7); padding-bottom: va
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-sm);
   color: var(--text-muted);
-  font-size: 0.93rem;
+  font-family: var(--font-label);
+  font-size: 0.96rem;
   font-weight: 500;
   white-space: nowrap;
   transition: color var(--t-fast), background var(--t-fast);
@@ -142,7 +146,8 @@ html[data-theme="dark"] .theme-toggle .moon { display: block; }
 .footer-grid .foot-brand .brand { font-size: 1.05rem; margin-bottom: var(--space-3); }
 .footer-grid .foot-brand p { max-width: 30ch; color: var(--text-muted); }
 .footer-col h4 {
-  font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em;
+  font-family: var(--font-label);
+  font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em;
   color: var(--text-subtle); margin-bottom: var(--space-3);
 }
 .footer-col a { display: block; color: var(--text-muted); padding: var(--space-1) 0; }
@@ -156,13 +161,13 @@ html[data-theme="dark"] .theme-toggle .moon { display: block; }
 }
 .footer-bar .chips { display: flex; gap: var(--space-2); flex-wrap: wrap; }
 
-/* ---- Hero (dark emerald mesh) ----------------------------------------- */
+/* ---- Hero (dark forest mesh) ------------------------------------------ */
 .hero {
   position: relative;
   overflow: hidden;
   background-color: var(--hero-ink);
   background-image: var(--hero-mesh);
-  color: #eafaf3;
+  color: #f4efe3;
   border-bottom: 1px solid var(--border);
 }
 .hero::after {
@@ -175,7 +180,7 @@ html[data-theme="dark"] .theme-toggle .moon { display: block; }
 .hero .container { position: relative; z-index: 1; padding-top: var(--space-8); padding-bottom: var(--space-8); }
 .hero-inner { max-width: 760px; }
 .hero h1, .hero .display { color: #fff; }
-.hero .lede { color: rgba(234, 250, 243, 0.78); }
+.hero .lede { color: rgba(244, 239, 227, 0.78); }
 .hero .eyebrow { color: var(--accent-400); }
 .hero .display .accent {
   background: var(--gradient-gold);

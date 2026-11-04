@@ -34,3 +34,10 @@ SERVE_MEDIA = True
 
 # Email prints to the console in development (no SMTP required).
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# Reaching this dev server through code-server's path-prefix proxy?
+#   * /absproxy/<port>/ forwards the whole path → auto-detected, nothing to do.
+#   * /proxy/<port>/ strips the path and sends no header → export APP_URL_PREFIX
+#     so links stay inside the mount, e.g.:
+#         APP_URL_PREFIX=/proxy/8899 python manage.py runserver 0.0.0.0:8899
+# See config/settings/base.py (APP_URL_PREFIX) for details.

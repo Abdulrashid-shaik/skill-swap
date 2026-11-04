@@ -1,72 +1,72 @@
-/* SkillSwap design tokens — "Emerald Luxe" SaaS system.
+/* SkillSwap design tokens — "Forest & Sand" SaaS system.
    Single source of truth for colour, type, spacing, elevation, theming.
    Never hard-code these values in templates. Retheme the whole app by
    editing the brand ramp below. See docs/UI_DESIGN_SYSTEM.md. */
 :root {
-  /* Brand ramp (emerald) */
-  --brand-50:  #ecfdf5;
-  --brand-100: #d1fae5;
-  --brand-200: #a7f3d0;
-  --brand-300: #6ee7b7;
-  --brand-400: #34d399;
-  --brand-500: #10b981;
-  --brand-600: #059669;
-  --brand-700: #047857;
-  --brand-800: #065f46;
+  /* Brand ramp (forest green) */
+  --brand-50:  #eef1ea;
+  --brand-100: #d9e1d2;
+  --brand-200: #b5c4a9;
+  --brand-300: #8ba47d;
+  --brand-400: #5e7d57;
+  --brand-500: #3a5a41;
+  --brand-600: #2a4832;
+  --brand-700: #1e3b2f;
+  --brand-800: #14291f;
 
-  /* Teal partner + gold accent (luxury highlight) */
-  --teal-500:   #14b8a6;
-  --teal-600:   #0d9488;
-  --accent-400: #fbbf24;
-  --accent-500: #f59e0b;   /* gold */
-  --accent-600: #d97706;
+  /* Partner (muted olive) + warm sand accent (highlight) */
+  --teal-500:   #7f8c6a;
+  --teal-600:   #647151;
+  --accent-400: #dcccab;
+  --accent-500: #c8b48a;   /* warm sand */
+  --accent-600: #ad986b;
 
   /* Signature gradients */
-  --gradient-brand: linear-gradient(135deg, #059669 0%, #0d9488 100%);
-  --gradient-gold:  linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
-  --gradient-soft:  linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 100%);
+  --gradient-brand: linear-gradient(135deg, #3a5a41 0%, #1e3b2f 100%);
+  --gradient-gold:  linear-gradient(135deg, #c8b48a 0%, #ad986b 100%);
+  --gradient-soft:  linear-gradient(135deg, #f5f0e6 0%, #faf7f0 100%);
 
   /* Dark mesh used by the hero (always dark, both themes) */
-  --hero-ink: #06140f;
+  --hero-ink: #152a20;
   --hero-mesh:
-    radial-gradient(55% 75% at 12% 8%,  rgba(16,185,129,0.38), transparent 60%),
-    radial-gradient(50% 60% at 88% 18%, rgba(20,184,166,0.30), transparent 60%),
-    radial-gradient(60% 70% at 72% 92%, rgba(245,158,11,0.16), transparent 62%),
-    linear-gradient(160deg, #06140f 0%, #08201a 55%, #06140f 100%);
+    radial-gradient(55% 75% at 12% 8%,  rgba(30,59,47,0.50), transparent 60%),
+    radial-gradient(50% 60% at 88% 18%, rgba(200,180,138,0.26), transparent 60%),
+    radial-gradient(60% 70% at 72% 92%, rgba(127,140,106,0.22), transparent 62%),
+    linear-gradient(160deg, #152a20 0%, #1e3b2f 55%, #152a20 100%);
 
   /* Subtle grain overlay (inline SVG → loads through the proxy) */
   --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
-  /* Neutrals (slate, cool) */
-  --bg:          #f4f8f6;
+  /* Neutrals (warm cream + forest-grey) */
+  --bg:          #f5f0e6;
   --surface:     #ffffff;
-  --surface-2:   #f6faf8;
-  --surface-3:   #eef4f1;
-  --text:        #0d1b16;
-  --text-muted:  #51655c;
-  --text-subtle: #8aa096;
-  --border:        #e2ece7;
-  --border-strong: #cfddd6;
-  --header-bg:   rgba(255, 255, 255, 0.82);
+  --surface-2:   #faf7f0;
+  --surface-3:   #ece5d6;
+  --text:        #1b3326;
+  --text-muted:  #5a6a55;
+  --text-subtle: #8a9580;
+  --border:        #e3dcc9;
+  --border-strong: #d2c7ad;
+  --header-bg:   rgba(245, 240, 230, 0.82);
 
-  /* page background texture: faint emerald glow + dot grid */
+  /* page background texture: faint forest glow + dot grid */
   --bg-texture:
-    radial-gradient(60% 50% at 50% -10%, rgba(16,185,129,0.08), transparent 70%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='1.5' cy='1.5' r='1' fill='%23cfddd6' fill-opacity='0.6'/%3E%3C/svg%3E");
+    radial-gradient(60% 50% at 50% -10%, rgba(30,59,47,0.08), transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='1.5' cy='1.5' r='1' fill='%23d2c7ad' fill-opacity='0.6'/%3E%3C/svg%3E");
 
   /* Semantic */
-  --success:    #059669;
-  --success-bg: #ecfdf5;
-  --success-bd: #a7f3d0;
+  --success:    #1f9d63;
+  --success-bg: #dff5ea;
+  --success-bd: #b7e6cc;
   --danger:     #dc2626;
   --danger-bg:  #fef2f2;
   --danger-bd:  #fecaca;
-  --warning:    #b45309;
-  --warning-bg: #fffbeb;
-  --warning-bd: #fde68a;
-  --info:       #0d9488;
-  --info-bg:    #f0fdfa;
-  --info-bd:    #99f6e4;
+  --warning:    #b7791f;
+  --warning-bg: #fdf0d5;
+  --warning-bd: #f3dca6;
+  --info:       #5e6b4a;
+  --info-bg:    #e8ebdf;
+  --info-bd:    #cbd3b8;
 
   /* Spacing scale */
   --space-1: 0.25rem;
@@ -86,15 +86,22 @@
   --radius-pill: 999px;
 
   /* Elevation */
-  --shadow-xs: 0 1px 2px rgba(6, 32, 24, 0.06);
-  --shadow-sm: 0 1px 3px rgba(6, 32, 24, 0.08), 0 1px 2px rgba(6, 32, 24, 0.04);
-  --shadow-md: 0 6px 16px rgba(6, 32, 24, 0.08), 0 2px 6px rgba(6, 32, 24, 0.04);
-  --shadow-lg: 0 16px 40px rgba(6, 32, 24, 0.14);
-  --shadow-brand: 0 10px 24px rgba(5, 150, 105, 0.28);
-  --ring: 0 0 0 4px rgba(16, 185, 129, 0.20);
+  --shadow-xs: 0 1px 2px rgba(20, 41, 31, 0.06);
+  --shadow-sm: 0 1px 3px rgba(20, 41, 31, 0.08), 0 1px 2px rgba(20, 41, 31, 0.04);
+  --shadow-md: 0 6px 16px rgba(20, 41, 31, 0.09), 0 2px 6px rgba(20, 41, 31, 0.05);
+  --shadow-lg: 0 16px 40px rgba(20, 41, 31, 0.16);
+  --shadow-brand: 0 10px 24px rgba(30, 59, 47, 0.28);
+  --ring: 0 0 0 4px rgba(58, 90, 65, 0.24);
 
-  /* Type */
-  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* Type — no plain base font anywhere; a deliberate mix of display faces.
+     --font-body is the readable workhorse; the rest flavour specific zones. */
+  --font-body:   "Kelly Slab", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-sans:   var(--font-body);   /* catch-all alias → never falls back to a base sans */
+  --font-serif:  "Redaction 50", Georgia, "Times New Roman", serif;  /* headings, brand */
+  --font-chat:   system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;  /* chat text — sans-serif */
+  --font-label:  "Sedan SC", Georgia, serif;                         /* nav, buttons, labels, badges */
+  --font-sketch: "Cabin Sketch", system-ui, sans-serif;             /* announce bar, big numbers */
+  --font-decor:  "Griffy", system-ui, cursive;                       /* empty states, playful accents */
   --font-mono: ui-monospace, "SFMono-Regular", "Menlo", "Consolas", monospace;
 
   /* Layout */
@@ -115,33 +122,32 @@
   --color-soft-white: var(--surface);
   --color-charcoal: var(--text);
   --color-warm-neutral: var(--border);
-  --font-serif: var(--font-sans);
 }
 
 /* ---- Dark theme ------------------------------------------------------- */
 html[data-theme="dark"] {
-  --bg:          #06100c;
-  --surface:     #0f1b16;
-  --surface-2:   #0b1611;
-  --surface-3:   #16271f;
-  --text:        #e7f0ec;
-  --text-muted:  #9db3aa;
-  --text-subtle: #647a71;
-  --border:        #1c2c24;
-  --border-strong: #2a3f35;
-  --header-bg:   rgba(6, 16, 12, 0.82);
-  --gradient-soft: linear-gradient(135deg, #0b1611 0%, #0f1b16 100%);
+  --bg:          #121a15;
+  --surface:     #1a251e;
+  --surface-2:   #151e18;
+  --surface-3:   #243027;
+  --text:        #eef2e9;
+  --text-muted:  #a3b199;
+  --text-subtle: #76856c;
+  --border:        #2a382d;
+  --border-strong: #3c4d3f;
+  --header-bg:   rgba(18, 26, 21, 0.82);
+  --gradient-soft: linear-gradient(135deg, #151e18 0%, #1a251e 100%);
 
-  --success-bg: #06281c; --success-bd: #0c4a36;
+  --success-bg: #12372a; --success-bd: #1c5c42;
   --danger-bg:  #2a1110; --danger-bd:  #5c201f;
-  --warning-bg: #2a1e07; --warning-bd: #553c12;
-  --info-bg:    #052a26; --info-bd:    #0c4a44;
+  --warning-bg: #3a2f14; --warning-bd: #5a4a1c;
+  --info-bg:    #223027; --info-bd:    #38482e;
 
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
   --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.5);
   --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
 
   --bg-texture:
-    radial-gradient(60% 50% at 50% -10%, rgba(16,185,129,0.10), transparent 70%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='1.5' cy='1.5' r='1' fill='%232a3f35' fill-opacity='0.6'/%3E%3C/svg%3E");
+    radial-gradient(60% 50% at 50% -10%, rgba(200,180,138,0.10), transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='1.5' cy='1.5' r='1' fill='%233c4d3f' fill-opacity='0.6'/%3E%3C/svg%3E");
 }

@@ -114,12 +114,35 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True  # timezone-aware datetimes (required for scheduling, M8)
 
+# URL PREFIX (path-prefix proxies) --------------------------------------------
+# Some environments mount the app under a sub-path. Two proxy styles exist:
+#
+#   * code-server ``/absproxy/<port>/`` forwards the FULL path through, so
+#     ForwardedPrefixMiddleware auto-detects the prefix from the path — nothing
+#     to configure here.
+#   * code-server ``/proxy/<port>/`` (and similar) STRIP the sub-path before
+#     forwarding and send no ``X-Forwarded-Prefix`` header, so the app has no
+#     way to discover it. For those, set ``APP_URL_PREFIX`` so every generated
+#     link, redirect and asset URL is prefixed, e.g.::
+#
+#         APP_URL_PREFIX=/proxy/8899
+#
+# Empty (the default) = direct access / auto-detected proxy — unaffected.
+APP_URL_PREFIX = os.environ.get("APP_URL_PREFIX", "").strip()
+if APP_URL_PREFIX:
+    APP_URL_PREFIX = "/" + APP_URL_PREFIX.strip("/")
+
 # STATIC & MEDIA --------------------------------------------------------------
-STATIC_URL = "static/"
+# Root-absolute URLs (leading "/") so assets resolve from the mount root rather
+# than relative to the current page. STATIC_URL carries the configured prefix
+# directly; MEDIA_URL stays prefix-less and ProxyAwareMediaStorage prepends the
+# *live* script prefix per request (covers both auto-detected and configured
+# proxies) — see apps/common/storage.py.
+STATIC_URL = f"{APP_URL_PREFIX}/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-MEDIA_URL = "media/"
+MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 # Uploaded media is served through a storage that prefixes its URLs with the
@@ -170,7 +193,11 @@ REST_FRAMEWORK = {
 
 
 
-# URL prefix handling is dynamic: ForwardedPrefixMiddleware reads the proxy's
-# X-Forwarded-Prefix header per request so links work both behind a path-prefix
-# proxy and on direct access. Do NOT hardcode FORCE_SCRIPT_NAME — it would pin
-# every generated URL to a fixed prefix and break navigation on direct access.
+# URL prefix handling (see ForwardedPrefixMiddleware), in priority order:
+#   1. APP_URL_PREFIX (above) — explicit, for strip-and-no-header proxies.
+#   2. X-Forwarded-Prefix header — reverse proxies that strip + announce it.
+#   3. /absproxy/<port>/ embedded in the path — code-server forwards it whole.
+# All three are opt-in per request/environment, so direct access is unaffected.
+# We deliberately avoid Django's FORCE_SCRIPT_NAME: it prepends the prefix to
+# generated URLs but never strips it from the inbound path, so /absproxy/ routes
+# would 404. The middleware does both.
