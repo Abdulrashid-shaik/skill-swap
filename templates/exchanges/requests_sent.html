@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Requests sent — SkillSwap{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <span class="eyebrow">Requests</span>
+    <h1>Requests sent</h1>
+    <p><a href="{% url 'requests_received' %}">View requests you've received →</a></p>
+  </div>
+
+  <ul class="request-list">
+    {% for req in requests %}
+      <li class="match-card">
+        <div style="display:flex; align-items:center; gap:var(--space-3); margin-bottom:var(--space-3)">
+          <strong>To {{ req.receiver.profile.full_name|default:req.receiver.email }}</strong>
+          <span class="badge {% if req.status == 'pending' %}badge-warning{% elif req.status == 'accepted' %}badge-success{% else %}badge{% endif %}" style="margin-left:auto">{{ req.get_status_display }}</span>
+        </div>
+        <p style="margin-bottom:var(--space-3)">
+          You teach <span class="badge badge-teach">{{ req.offered_skill.name }}</span>,
+          you learn <span class="badge badge-learn">{{ req.requested_skill.name }}</span>.
+        </p>
+        {% if req.status == "pending" %}
+          <form method="post" action="{% url 'cancel_request' req.pk %}">
+            {% csrf_token %}<button class="btn btn-secondary" type="submit">Cancel request</button>
+          </form>
+        {% elif req.status == "accepted" %}
+          <a class="btn btn-primary" href="{% url 'exchange_detail' req.exchange.pk %}">Open exchange</a>
+        {% endif %}
+      </li>
+    {% empty %}
+      <div class="empty-state">
+        <div class="empty-icon">📤</div>
+        <h3>No requests sent</h3>
+        <p>Find a mutual match in Discover to send your first request.</p>
+        <p style="margin-top:var(--space-4)"><a class="btn btn-primary" href="{% url 'discover' %}">Go to Discover</a></p>
+      </div>
+    {% endfor %}
+  </ul>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Leave a review — SkillSwap{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <span class="eyebrow">Review</span>
+    <h1>Review {{ other.profile.full_name|default:other.email }}</h1>
+  </div>
+  {% if already %}
+    <div class="msg info">You've already reviewed this exchange.</div>
+    <p style="margin-top:var(--space-4)"><a class="btn btn-secondary" href="{% url 'exchange_detail' exchange.pk %}">Back to the exchange</a></p>
+  {% else %}
+    <div class="form-card">
+      <form method="post" class="stack">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="btn-row">
+          <button class="btn btn-primary" type="submit">Submit review</button>
+          <a class="btn btn-secondary" href="{% url 'exchange_detail' exchange.pk %}">Cancel</a>
+        </div>
+      </form>
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Account settings — SkillSwap{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <span class="eyebrow">Settings</span>
+    <h1>Account settings</h1>
+    <p class="lede">Update your profile details.</p>
+  </div>
+
+  <div class="form-card" style="margin-bottom: var(--space-6)">
+    <form method="post" enctype="multipart/form-data" class="stack">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="btn-row">
+        <button class="btn btn-primary" type="submit">Save changes</button>
+        <a class="btn btn-secondary" href="{% url 'profile' %}">Cancel</a>
+      </div>
+    </form>
+  </div>
+
+  <div class="form-card">
+    <h2 style="margin-top:0">Google Calendar</h2>
+    <p class="muted">Connect Google Calendar to add Google Meet links to your learning sessions.</p>
+    <div class="btn-row">
+      <a class="btn btn-secondary" href="{% url 'google_connect' %}">Connect Google Calendar</a>
+      <form method="post" action="{% url 'google_disconnect' %}">
+        {% csrf_token %}
+        <button class="btn btn-ghost" type="submit">Disconnect</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

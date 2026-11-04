@@ -1,0 +1,147 @@
+/* SkillSwap design tokens — "Emerald Luxe" SaaS system.
+   Single source of truth for colour, type, spacing, elevation, theming.
+   Never hard-code these values in templates. Retheme the whole app by
+   editing the brand ramp below. See docs/UI_DESIGN_SYSTEM.md. */
+:root {
+  /* Brand ramp (emerald) */
+  --brand-50:  #ecfdf5;
+  --brand-100: #d1fae5;
+  --brand-200: #a7f3d0;
+  --brand-300: #6ee7b7;
+  --brand-400: #34d399;
+  --brand-500: #10b981;
+  --brand-600: #059669;
+  --brand-700: #047857;
+  --brand-800: #065f46;
+
+  /* Teal partner + gold accent (luxury highlight) */
+  --teal-500:   #14b8a6;
+  --teal-600:   #0d9488;
+  --accent-400: #fbbf24;
+  --accent-500: #f59e0b;   /* gold */
+  --accent-600: #d97706;
+
+  /* Signature gradients */
+  --gradient-brand: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+  --gradient-gold:  linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+  --gradient-soft:  linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 100%);
+
+  /* Dark mesh used by the hero (always dark, both themes) */
+  --hero-ink: #06140f;
+  --hero-mesh:
+    radial-gradient(55% 75% at 12% 8%,  rgba(16,185,129,0.38), transparent 60%),
+    radial-gradient(50% 60% at 88% 18%, rgba(20,184,166,0.30), transparent 60%),
+    radial-gradient(60% 70% at 72% 92%, rgba(245,158,11,0.16), transparent 62%),
+    linear-gradient(160deg, #06140f 0%, #08201a 55%, #06140f 100%);
+
+  /* Subtle grain overlay (inline SVG → loads through the proxy) */
+  --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  /* Neutrals (slate, cool) */
+  --bg:          #f4f8f6;
+  --surface:     #ffffff;
+  --surface-2:   #f6faf8;
+  --surface-3:   #eef4f1;
+  --text:        #0d1b16;
+  --text-muted:  #51655c;
+  --text-subtle: #8aa096;
+  --border:        #e2ece7;
+  --border-strong: #cfddd6;
+  --header-bg:   rgba(255, 255, 255, 0.82);
+
+  /* page background texture: faint emerald glow + dot grid */
+  --bg-texture:
+    radial-gradient(60% 50% at 50% -10%, rgba(16,185,129,0.08), transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='1.5' cy='1.5' r='1' fill='%23cfddd6' fill-opacity='0.6'/%3E%3C/svg%3E");
+
+  /* Semantic */
+  --success:    #059669;
+  --success-bg: #ecfdf5;
+  --success-bd: #a7f3d0;
+  --danger:     #dc2626;
+  --danger-bg:  #fef2f2;
+  --danger-bd:  #fecaca;
+  --warning:    #b45309;
+  --warning-bg: #fffbeb;
+  --warning-bd: #fde68a;
+  --info:       #0d9488;
+  --info-bg:    #f0fdfa;
+  --info-bd:    #99f6e4;
+
+  /* Spacing scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+
+  /* Radii */
+  --radius-sm:   8px;
+  --radius:      12px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-pill: 999px;
+
+  /* Elevation */
+  --shadow-xs: 0 1px 2px rgba(6, 32, 24, 0.06);
+  --shadow-sm: 0 1px 3px rgba(6, 32, 24, 0.08), 0 1px 2px rgba(6, 32, 24, 0.04);
+  --shadow-md: 0 6px 16px rgba(6, 32, 24, 0.08), 0 2px 6px rgba(6, 32, 24, 0.04);
+  --shadow-lg: 0 16px 40px rgba(6, 32, 24, 0.14);
+  --shadow-brand: 0 10px 24px rgba(5, 150, 105, 0.28);
+  --ring: 0 0 0 4px rgba(16, 185, 129, 0.20);
+
+  /* Type */
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "Menlo", "Consolas", monospace;
+
+  /* Layout */
+  --container:        1140px;
+  --container-narrow: 460px;
+  --header-h: 66px;
+
+  /* Motion */
+  --t-fast: 0.12s ease;
+  --t: 0.18s ease;
+
+  /* Legacy colour aliases (harmless safety net) */
+  --color-deep-blue: var(--brand-600);
+  --color-deep-blue-hover: var(--brand-700);
+  --color-pale-blue: var(--brand-50);
+  --color-powder-blue: var(--brand-100);
+  --color-sky-blue: var(--brand-400);
+  --color-soft-white: var(--surface);
+  --color-charcoal: var(--text);
+  --color-warm-neutral: var(--border);
+  --font-serif: var(--font-sans);
+}
+
+/* ---- Dark theme ------------------------------------------------------- */
+html[data-theme="dark"] {
+  --bg:          #06100c;
+  --surface:     #0f1b16;
+  --surface-2:   #0b1611;
+  --surface-3:   #16271f;
+  --text:        #e7f0ec;
+  --text-muted:  #9db3aa;
+  --text-subtle: #647a71;
+  --border:        #1c2c24;
+  --border-strong: #2a3f35;
+  --header-bg:   rgba(6, 16, 12, 0.82);
+  --gradient-soft: linear-gradient(135deg, #0b1611 0%, #0f1b16 100%);
+
+  --success-bg: #06281c; --success-bd: #0c4a36;
+  --danger-bg:  #2a1110; --danger-bd:  #5c201f;
+  --warning-bg: #2a1e07; --warning-bd: #553c12;
+  --info-bg:    #052a26; --info-bd:    #0c4a44;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
+
+  --bg-texture:
+    radial-gradient(60% 50% at 50% -10%, rgba(16,185,129,0.10), transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='1.5' cy='1.5' r='1' fill='%232a3f35' fill-opacity='0.6'/%3E%3C/svg%3E");
+}

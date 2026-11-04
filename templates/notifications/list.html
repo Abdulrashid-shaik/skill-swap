@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Notifications — SkillSwap{% endblock %}
+{% block content %}
+  <div class="page-head" style="display:flex; align-items:flex-end; justify-content:space-between; gap:var(--space-4); flex-wrap:wrap">
+    <div>
+      <span class="eyebrow">Alerts</span>
+      <h1 style="margin:0">Notifications</h1>
+    </div>
+    {% if notifications %}
+      <form method="post" action="{% url 'notification_read_all' %}">
+        {% csrf_token %}
+        <button class="btn btn-secondary btn-sm" type="submit">Mark all as read</button>
+      </form>
+    {% endif %}
+  </div>
+
+  {% if notifications %}
+    <ul class="notifications">
+      {% for note in notifications %}
+        <li class="{% if not note.is_read %}unread{% endif %}">
+          <div style="display:flex; align-items:center; gap:var(--space-3)">
+            <strong>{{ note.title }}</strong>
+            <span class="meta" style="margin-left:auto">{{ note.created_at|date:"M j, Y, g:i a" }}</span>
+          </div>
+          {% if note.body %}<div class="muted" style="margin-top:4px">{{ note.body }}</div>{% endif %}
+          <form method="post" action="{% url 'notification_read' note.pk %}" style="margin-top: var(--space-2)">
+            {% csrf_token %}
+            <button class="btn btn-ghost btn-sm" type="submit">
+              {% if note.target_url %}Open →{% else %}Mark read{% endif %}
+            </button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">🔔</div>
+      <h3>You're all caught up</h3>
+      <p>No notifications yet.</p>
+    </div>
+  {% endif %}
+{% endblock %}

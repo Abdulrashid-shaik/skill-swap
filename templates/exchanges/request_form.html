@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Request an exchange — SkillSwap{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <span class="eyebrow">New exchange</span>
+    <h1>Request an exchange with {{ receiver.profile.full_name|default:receiver.email }}</h1>
+  </div>
+  {% if compatible %}
+    <p class="lede">Choose what you'll teach and what you'd like to learn.</p>
+    <div class="form-card">
+      <form method="post" class="stack">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="btn-row">
+          <button class="btn btn-primary" type="submit">Send request</button>
+          <a class="btn btn-secondary" href="{% url 'member_detail' receiver.pk %}">Cancel</a>
+        </div>
+      </form>
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">⇄</div>
+      <h3>Not a mutual match yet</h3>
+      <p>You can't request an exchange until your skills line up both ways. Add
+      complementary skills to your lists first.</p>
+      <p style="margin-top:var(--space-4)"><a class="btn btn-primary" href="{% url 'discover' %}">Back to discovery</a></p>
+    </div>
+  {% endif %}
+{% endblock %}

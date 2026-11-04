@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Chat — SkillSwap{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <span class="eyebrow">Messages</span>
+    <h1 style="margin:0">Chat with {{ other.profile.full_name|default:other.email }}</h1>
+    <p><a href="{% url 'exchange_detail' exchange.pk %}">← Back to the exchange</a></p>
+  </div>
+
+  <div id="chat-messages" class="chat-box">
+    {% for m in chat_messages %}
+      <div class="chat-msg {% if m.sender_id == request.user.pk %}me{% else %}them{% endif %}">
+        <span class="who">{{ m.sender.profile.full_name|default:m.sender.email }} · {{ m.created_at|date:"M d, H:i" }}</span>
+        <span class="body">{{ m.body }}</span>
+      </div>
+    {% endfor %}
+  </div>
+
+  <form id="chat-form" method="post" action="{% url 'messages_send' exchange.pk %}">
+    {% csrf_token %}
+    <textarea name="body" rows="2" placeholder="Write a message" required></textarea>
+    <button class="btn btn-primary" type="submit">Send</button>
+  </form>
+
+  <script>
+  (function () {
+    var list = document.getElementById('chat-messages');
+    var form = document.getElementById('chat-form');
+    var input = form.querySelector('[name=body]');
+    var pollUrl = "{% url 'messages_poll' exchange.pk %}";
+    var sendUrl = "{% url 'messages_send' exchange.pk %}";
+    var lastId = {{ last_message_id }};
+
+    list.scrollTop = list.scrollHeight;
+
+    function csrf() {
+      var m = document.cookie.match(/csrftoken=([^;]+)/);
+      return m ? m[1] : '';
+    }
+    function append(m) {
+      var div = document.createElement('div');
+      div.className = 'chat-msg ' + (m.is_me ? 'me' : 'them');
+      var who = document.createElement('span');
+      who.className = 'who'; who.textContent = m.sender + ' · ' + m.created;
+      var body = document.createElement('span');
+      body.className = 'body'; body.textContent = m.body;
+      div.appendChild(who); div.appendChild(body);
+      list.appendChild(div);
+      list.scrollTop = list.scrollHeight;
+      if (m.id > lastId) lastId = m.id;
+    }
+    function poll() {
+      fetch(pollUrl + '?after=' + lastId, {headers: {'X-Requested-With': 'fetch'}})
+        .then(function (r) { return r.json(); })
+        .then(function (d) { (d.messages || []).forEach(append); })
+        .catch(function () {});
+    }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var body = input.value.trim();
+      if (!body) return;
+      fetch(sendUrl, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'X-CSRFToken': csrf()},
+        body: JSON.stringify({body: body})
+      }).then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) { if (d && d.message) { append(d.message); input.value = ''; } })
+        .catch(function () {});
+    });
+    setInterval(poll, 4000);
+  })();
+  </script>
+{% endblock %}

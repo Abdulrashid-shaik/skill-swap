@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Exchange — SkillSwap{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <span class="eyebrow">Exchange workspace</span>
+    <h1 style="display:flex; align-items:center; gap:var(--space-3); flex-wrap:wrap">
+      Exchange
+      {% if exchange.status == "ongoing" %}
+        <span class="badge badge-info"><span class="dot"></span>{{ exchange.get_status_display }}</span>
+      {% elif exchange.status == "completed" %}
+        <span class="badge badge-success"><span class="dot"></span>{{ exchange.get_status_display }}</span>
+      {% else %}
+        <span class="badge badge-danger"><span class="dot"></span>{{ exchange.get_status_display }}</span>
+      {% endif %}
+    </h1>
+  </div>
+
+  <section class="card match-lines">
+    <p><strong>Participants:</strong>
+      {{ exchange.participant_a.profile.full_name|default:exchange.participant_a.email }}
+      &harr;
+      {{ exchange.participant_b.profile.full_name|default:exchange.participant_b.email }}
+    </p>
+    <p><strong>Agreed skills:</strong>
+      {{ exchange.participant_a.profile.full_name|default:exchange.participant_a.email }}
+      teaches <span class="badge badge-teach">{{ exchange.skill_a_teaches.name }}</span>;
+      {{ exchange.participant_b.profile.full_name|default:exchange.participant_b.email }}
+      teaches <span class="badge badge-teach">{{ exchange.skill_b_teaches.name }}</span>.
+    </p>
+    <p class="meta" style="margin:0">Started {{ exchange.started_at|date:"M j, Y" }}
+      {% if exchange.completed_at %}· Completed {{ exchange.completed_at|date:"M j, Y" }}{% endif %}
+    </p>
+  </section>
+
+  <div class="btn-row" style="margin: var(--space-5) 0">
+    <a class="btn btn-secondary" href="{% url 'exchange_chat' exchange.pk %}">Open chat</a>
+    <a class="btn btn-secondary" href="{% url 'session_list' exchange.pk %}">Learning sessions</a>
+  </div>
+
+  {% if exchange.status == "ongoing" %}
+    <div class="form-card">
+      <h2 style="margin-top:0">Completion</h2>
+      <p>Both participants must confirm before the exchange is marked complete.</p>
+      <p class="meta">{{ confirm_count }} of 2 confirmations recorded.</p>
+      {% if has_confirmed %}
+        <div class="msg info" style="margin: var(--space-4) 0">You have confirmed. Waiting for your partner.</div>
+      {% else %}
+        <form method="post" action="{% url 'confirm_exchange' exchange.pk %}" style="margin-bottom: var(--space-4)">
+          {% csrf_token %}
+          <button class="btn btn-primary" type="submit">Confirm completion</button>
+        </form>
+      {% endif %}
+      <form method="post" action="{% url 'cancel_exchange' exchange.pk %}">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Cancel exchange</button>
+      </form>
+    </div>
+  {% elif exchange.status == "completed" %}
+    <div class="msg success" style="margin-bottom: var(--space-4)">This exchange is complete. 🎉</div>
+    <a class="btn btn-primary" href="{% url 'create_review' exchange.pk %}">Leave a review</a>
+  {% else %}
+    <div class="msg danger">This exchange was cancelled.</div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Report member — SkillSwap{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <span class="eyebrow">Moderation</span>
+    <h1>Report {{ target.profile.full_name|default:target.email }}</h1>
+  </div>
+  <div class="form-card">
+    <form method="post" class="stack">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="btn-row">
+        <button class="btn btn-primary" type="submit">Submit report</button>
+        <a class="btn btn-secondary" href="{% url 'member_detail' target.pk %}">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

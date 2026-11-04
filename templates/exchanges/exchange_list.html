@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}My exchanges — SkillSwap{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <span class="eyebrow">Exchanges</span>
+    <h1>My exchanges</h1>
+  </div>
+
+  <ul class="request-list">
+    {% for ex in exchanges %}
+      <li class="list-row">
+        <div class="list-main">
+          <a href="{% url 'exchange_detail' ex.pk %}">
+            {{ ex.participant_a.profile.full_name|default:ex.participant_a.email }}
+            &harr;
+            {{ ex.participant_b.profile.full_name|default:ex.participant_b.email }}
+          </a>
+          <p class="meta" style="margin:4px 0 0">{{ ex.skill_a_teaches.name }} &harr; {{ ex.skill_b_teaches.name }}</p>
+        </div>
+        {% if ex.status == "ongoing" %}
+          <span class="badge badge-info"><span class="dot"></span>{{ ex.get_status_display }}</span>
+        {% elif ex.status == "completed" %}
+          <span class="badge badge-success"><span class="dot"></span>{{ ex.get_status_display }}</span>
+        {% else %}
+          <span class="badge badge-danger"><span class="dot"></span>{{ ex.get_status_display }}</span>
+        {% endif %}
+      </li>
+    {% empty %}
+      <div class="empty-state">
+        <div class="empty-icon">⇄</div>
+        <h3>No exchanges yet</h3>
+        <p>Find a mutual match to start your first exchange.</p>
+        <p style="margin-top: var(--space-4)"><a class="btn btn-primary" href="{% url 'discover' %}">Go to Discover</a></p>
+      </div>
+    {% endfor %}
+  </ul>
+{% endblock %}

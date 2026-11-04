@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}SkillSwap — Trade skills, not money{% endblock %}
+
+{% block main %}
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <span class="eyebrow">Peer-to-peer skill exchange</span>
+        <h1 class="display">Learn anything by<br><span class="accent">teaching what you know.</span></h1>
+        <p class="lede">SkillSwap pairs you with members who want to learn a skill you can
+        teach — and can teach a skill you want to learn. No money, no credits. Just a
+        fair, two-way exchange.</p>
+        <div class="btn-row">
+          {% if user.is_authenticated %}
+            <a class="btn btn-primary btn-lg" href="{% url 'discover' %}">Explore compatible partners</a>
+            <a class="btn btn-outline-light btn-lg" href="{% url 'my_skills' %}">Manage my skills</a>
+          {% else %}
+            <a class="btn btn-primary btn-lg" href="{% url 'register' %}">Get started — it's free</a>
+            <a class="btn btn-outline-light btn-lg" href="{% url 'login' %}">Sign in</a>
+          {% endif %}
+        </div>
+        <div class="trust-row" style="justify-content:flex-start; margin-top: var(--space-6)">
+          <span class="trust-chip on-dark"><span class="ic">✓</span> Always free</span>
+          <span class="trust-chip on-dark"><span class="ic">⇄</span> Mutual matches only</span>
+          <span class="trust-chip on-dark"><span class="ic">🔒</span> Private by default</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    {% if messages %}
+      <ul class="messages" style="margin-top: var(--space-6)">
+        {% for message in messages %}
+          <li class="msg {{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <!-- FEATURES -->
+    <section class="section reveal">
+      <div class="section-head">
+        <span class="eyebrow">Why SkillSwap</span>
+        <h2>A fairer way to learn</h2>
+        <p class="lede">Everything is built around a single idea: a genuinely two-way trade.</p>
+      </div>
+      <div class="grid grid-3">
+        <div class="feature">
+          <div class="feature-icon">⇄</div>
+          <h3>Mutual by design</h3>
+          <p>You're only matched when the exchange works both ways — they teach what
+          you want, you teach what they want. No one-sided favours.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">✓</div>
+          <h3>Confirmed completion</h3>
+          <p>An exchange is only marked complete when both participants confirm it.
+          Reviews come after real, finished exchanges.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon gold">♡</div>
+          <h3>No money, ever</h3>
+          <p>No payments, credits, or points — just skills traded between people.
+          Schedule sessions and chat right inside the exchange.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section reveal" id="how">
+      <div class="showcase">
+        <div>
+          <span class="eyebrow">How it works</span>
+          <h2>Three steps to your first swap</h2>
+          <p class="muted">Set up your skills once, then let mutual matching do the work.</p>
+          <ol class="steps" style="margin-top: var(--space-5)">
+            <li><strong>List your skills</strong><span>Add what you can teach and what you want to learn.</span></li>
+            <li><strong>Discover mutual matches</strong><span>See members whose skills line up with yours in both directions.</span></li>
+            <li><strong>Swap &amp; confirm</strong><span>Request an exchange, agree, learn together, and confirm completion.</span></li>
+          </ol>
+        </div>
+        <div class="showcase-visual">
+          <div class="mini-card">
+            <div class="mini-head">
+              <span class="mini-avatar">S</span>
+              <div>
+                <strong>A mutual match</strong><br>
+                <span style="font-size:0.85rem; opacity:0.8">Both directions covered</span>
+              </div>
+            </div>
+            <div style="font-size:0.8rem; opacity:0.8; margin-bottom:4px">They teach you</div>
+            <span class="mini-pill gold">UI/UX Design</span>
+            <div style="font-size:0.8rem; opacity:0.8; margin:10px 0 4px">You teach them</div>
+            <span class="mini-pill">Python</span>
+          </div>
+          <div class="mini-card">
+            <div style="display:flex; align-items:center; gap:10px">
+              <span class="check" style="width:22px;height:22px;flex-shrink:0;border-radius:50%;background:var(--gradient-brand);color:#fff;display:grid;place-items:center;font-size:0.75rem">✓</span>
+              <span style="font-size:0.9rem">Exchange confirmed by both members</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRINCIPLES -->
+    <section class="section reveal" id="principles">
+      <div class="section-head">
+        <span class="eyebrow">Our principles</span>
+        <h2>Built on trust, not transactions</h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="principle">
+          <h3>Equal footing</h3>
+          <p>No tipping, no premium tiers, no pay-to-win. Everyone trades on the same terms.</p>
+        </div>
+        <div class="principle">
+          <h3>You stay in control</h3>
+          <p>Block, report, or decline anytime. Existing exchanges keep working; new contact stops.</p>
+        </div>
+        <div class="principle">
+          <h3>Private by default</h3>
+          <p>No public feed. Conversations live inside the exchange between the two of you.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ALWAYS FREE -->
+    <section class="section reveal">
+      <div class="free-band">
+        <span class="eyebrow" style="color:var(--accent-400)">Pricing</span>
+        <div class="price"><span class="cur">$</span>0<span style="font-size:1.1rem; font-weight:600; opacity:0.75"> / forever</span></div>
+        <h2 style="margin-top:var(--space-3)">Free, and always will be</h2>
+        <p>SkillSwap has no subscriptions, no credits, and no hidden fees. Your currency is what you can teach.</p>
+        <ul>
+          <li><span class="check">✓</span> Unlimited skills to teach and learn</li>
+          <li><span class="check">✓</span> Unlimited mutual matches &amp; exchanges</li>
+          <li><span class="check">✓</span> Built-in chat and session scheduling</li>
+          <li><span class="check">✓</span> Reviews after confirmed exchanges</li>
+        </ul>
+        <div class="btn-row" style="justify-content:center; margin-top:var(--space-6)">
+          {% if user.is_authenticated %}
+            <a class="btn btn-white btn-lg" href="{% url 'discover' %}">Find a match</a>
+          {% else %}
+            <a class="btn btn-white btn-lg" href="{% url 'register' %}">Create your free account</a>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section reveal" id="faq">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2>Questions, answered</h2>
+      </div>
+      <div class="faq">
+        <details open>
+          <summary>How does matching work?</summary>
+          <div class="faq-body">You're matched with a member only when it works both ways:
+          they can teach a skill you want to learn, and you can teach a skill they want to
+          learn. This keeps every exchange fair and two-sided.</div>
+        </details>
+        <details>
+          <summary>Is it really free?</summary>
+          <div class="faq-body">Yes. There are no payments, credits, points, or
+          subscriptions anywhere in SkillSwap. The only thing you "spend" is your time
+          teaching a skill you already have.</div>
+        </details>
+        <details>
+          <summary>How is an exchange completed?</summary>
+          <div class="faq-body">An exchange is marked complete only when both participants
+          confirm it. That mutual confirmation is what unlocks leaving a review.</div>
+        </details>
+        <details>
+          <summary>Where do we actually meet?</summary>
+          <div class="faq-body">You can chat and schedule learning sessions inside the
+          exchange. If you connect Google Calendar, sessions can include a Google Meet link.</div>
+        </details>
+        <details>
+          <summary>What if someone behaves badly?</summary>
+          <div class="faq-body">You can block or report any member at any time. Blocking
+          stops new contact and hides you from each other in discovery, while any existing
+          exchange keeps working.</div>
+        </details>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section reveal">
+      <div class="cta-band">
+        <h2>Ready to find your learning partner?</h2>
+        <p>Join SkillSwap and turn what you already know into everything you want to learn.</p>
+        {% if user.is_authenticated %}
+          <a class="btn btn-white btn-lg" href="{% url 'discover' %}">Browse matches</a>
+        {% else %}
+          <a class="btn btn-white btn-lg" href="{% url 'register' %}">Create your free account</a>
+        {% endif %}
+      </div>
+    </section>
+  </div>
+{% endblock %}

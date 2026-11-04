@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Explore compatible partners — SkillSwap{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <span class="eyebrow">Discover</span>
+    <h1>Explore compatible learning partners</h1>
+    <p class="lede">These members can teach a skill you want to learn — and want to
+    learn a skill you can teach.</p>
+  </div>
+
+  <form method="get" class="filter-bar">
+    <input type="text" name="q" value="{{ q }}" placeholder="Skill they can teach…">
+    <select name="category">
+      <option value="">Any category</option>
+      {% for category in categories %}
+        <option value="{{ category.slug }}" {% if category.slug == category_slug %}selected{% endif %}>{{ category.name }}</option>
+      {% endfor %}
+    </select>
+    <select name="proficiency">
+      <option value="">Any level</option>
+      {% for value, label in proficiencies %}
+        <option value="{{ value }}" {% if value == proficiency %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+    <button class="btn btn-primary" type="submit">Filter</button>
+  </form>
+
+  <div class="grid auto-grid">
+    {% for match in matches %}
+      <section class="match-card card-hover">
+        <div class="match-head">
+          {% if match.user.profile.avatar %}
+            <img class="avatar" src="{{ match.user.profile.avatar.url }}" alt="">
+          {% else %}
+            <span class="avatar-fallback">{{ match.user.profile.full_name|default:match.user.email|first|upper }}</span>
+          {% endif %}
+          <div>
+            <h2 style="margin:0"><a href="{% url 'member_detail' match.user.pk %}">{{ match.user.profile.full_name|default:match.user.email }}</a></h2>
+            {% if match.user.profile.location %}<span class="meta">{{ match.user.profile.location }}</span>{% endif %}
+          </div>
+        </div>
+
+        <div class="match-lines stack">
+          <div>
+            <span class="meta">They can teach you</span>
+            <div class="pill-row" style="margin-top:6px">
+              {% for item in match.they_teach_me %}
+                <span class="badge badge-teach">{{ item.skill.name }}{% if item.proficiency %} · {{ item.get_proficiency_display }}{% endif %}</span>
+              {% endfor %}
+            </div>
+          </div>
+          <div>
+            <span class="meta">You can teach them</span>
+            <div class="pill-row" style="margin-top:6px">
+              {% for skill in match.i_teach_them %}
+                <span class="badge badge-learn">{{ skill.name }}</span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row" style="margin-top: var(--space-5)">
+          <a class="btn btn-primary" href="{% url 'send_request' match.user.pk %}">Request exchange</a>
+          <a class="btn btn-secondary" href="{% url 'member_detail' match.user.pk %}">View profile</a>
+        </div>
+      </section>
+    {% empty %}
+      <div class="empty-state" style="grid-column: 1 / -1;">
+        <div class="empty-icon">⇄</div>
+        <h3>No compatible partners yet</h3>
+        <p>Add more skills you can teach and want to learn to widen your matches.</p>
+        <p style="margin-top: var(--space-4)"><a class="btn btn-primary" href="{% url 'my_skills' %}">Manage my skills</a></p>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

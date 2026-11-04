@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Learning sessions — SkillSwap{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <span class="eyebrow">Sessions</span>
+    <h1>Learning sessions</h1>
+    <p><a href="{% url 'exchange_detail' exchange.pk %}">← Back to the exchange</a></p>
+  </div>
+
+  <h2>Upcoming</h2>
+  <ul class="request-list">
+    {% for s in upcoming %}
+      <li class="match-card">
+        <div style="display:flex; align-items:center; gap:var(--space-3); margin-bottom:var(--space-2)">
+          <strong>{{ s.title }}</strong>
+          <span class="badge badge-info" style="margin-left:auto"><span class="dot"></span>Upcoming</span>
+        </div>
+        <p class="meta" style="margin:0 0 var(--space-2)">{{ s.scheduled_start }} – {{ s.scheduled_end }}</p>
+        {% if s.description %}<p class="muted">{{ s.description }}</p>{% endif %}
+        {% if s.google_meet_link %}<p><a class="btn btn-secondary btn-sm" href="{{ s.google_meet_link }}">Join Google Meet</a></p>{% endif %}
+        <div class="btn-row">
+          <a class="btn btn-secondary btn-sm" href="{% url 'reschedule_session' s.pk %}">Reschedule</a>
+          <form method="post" action="{% url 'complete_session' s.pk %}">
+            {% csrf_token %}<button class="btn btn-secondary btn-sm" type="submit">Mark complete</button>
+          </form>
+          <form method="post" action="{% url 'cancel_session' s.pk %}">
+            {% csrf_token %}<button class="btn btn-danger btn-sm" type="submit">Cancel</button>
+          </form>
+        </div>
+      </li>
+    {% empty %}
+      <div class="empty-state"><p style="margin:0">No upcoming sessions.</p></div>
+    {% endfor %}
+  </ul>
+
+  <h2 style="margin-top: var(--space-6)">Past &amp; closed</h2>
+  <ul class="request-list">
+    {% for s in past %}
+      <li class="list-row">
+        <div class="list-main">
+          <strong>{{ s.title }}</strong>
+          <p class="meta" style="margin:4px 0 0">{{ s.scheduled_start }}</p>
+        </div>
+        <span class="badge">{{ s.get_status_display }}</span>
+      </li>
+    {% empty %}
+      <div class="empty-state"><p style="margin:0">Nothing here yet.</p></div>
+    {% endfor %}
+  </ul>
+
+  <h2 style="margin-top: var(--space-6)">Schedule a session</h2>
+  <div class="form-card">
+    <form method="post" class="stack">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="btn btn-primary" type="submit">Schedule session</button>
+    </form>
+  </div>
+{% endblock %}

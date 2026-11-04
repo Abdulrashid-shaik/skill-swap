@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Requests received — SkillSwap{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <span class="eyebrow">Requests</span>
+    <h1>Requests received</h1>
+    <p><a href="{% url 'requests_sent' %}">View requests you've sent →</a></p>
+  </div>
+
+  <ul class="request-list">
+    {% for req in requests %}
+      <li class="match-card">
+        <div style="display:flex; align-items:center; gap:var(--space-3); margin-bottom:var(--space-3)">
+          <strong>{{ req.sender.profile.full_name|default:req.sender.email }}</strong>
+          <span class="badge {% if req.status == 'pending' %}badge-warning{% elif req.status == 'accepted' %}badge-success{% else %}badge{% endif %}" style="margin-left:auto">{{ req.get_status_display }}</span>
+        </div>
+        <p style="margin-bottom:var(--space-3)">
+          Wants to learn <span class="badge badge-teach">{{ req.requested_skill.name }}</span> from you,
+          and will teach you <span class="badge badge-learn">{{ req.offered_skill.name }}</span>.
+        </p>
+        {% if req.message %}<p class="muted" style="border-left:3px solid var(--border-strong); padding-left:var(--space-4)">{{ req.message }}</p>{% endif %}
+        {% if req.status == "pending" %}
+          <div class="btn-row">
+            <form method="post" action="{% url 'accept_request' req.pk %}">
+              {% csrf_token %}<button class="btn btn-primary" type="submit">Accept</button>
+            </form>
+            <form method="post" action="{% url 'reject_request' req.pk %}">
+              {% csrf_token %}<button class="btn btn-secondary" type="submit">Decline</button>
+            </form>
+          </div>
+        {% endif %}
+      </li>
+    {% empty %}
+      <div class="empty-state">
+        <div class="empty-icon">📥</div>
+        <h3>No requests received</h3>
+        <p>When someone wants to swap skills with you, it'll show up here.</p>
+      </div>
+    {% endfor %}
+  </ul>
+{% endblock %}

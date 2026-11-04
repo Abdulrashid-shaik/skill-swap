@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Create your account — SkillSwap{% endblock %}
+{% block content %}
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <h1>Create your account</h1>
+      <p class="lede">Join the community and start exchanging skills.</p>
+      <form method="post" class="stack">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary btn-block btn-lg" type="submit">Create account</button>
+      </form>
+      <p class="auth-foot">
+        Already a member? <a href="{% url 'login' %}">Sign in</a>
+      </p>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Deactivate account — SkillSwap{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <span class="eyebrow">Account</span>
+    <h1>Deactivate your account</h1>
+  </div>
+  <div class="form-card">
+    <div class="msg warning" style="margin-bottom:var(--space-5)">
+      Your profile will be hidden and you'll be signed out. You won't be able to
+      sign in again while deactivated.
+    </div>
+    <form method="post">
+      {% csrf_token %}
+      <div class="btn-row">
+        <button class="btn btn-danger" type="submit">Deactivate account</button>
+        <a class="btn btn-secondary" href="{% url 'settings' %}">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

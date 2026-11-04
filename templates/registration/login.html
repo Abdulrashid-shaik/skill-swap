@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Sign in — SkillSwap{% endblock %}
+{% block content %}
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <h1>Welcome back</h1>
+      <p class="lede">Sign in to find your next learning partner.</p>
+      <form method="post" class="stack">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary btn-block btn-lg" type="submit">Sign in</button>
+      </form>
+      <p class="auth-foot">
+        <a href="{% url 'password_reset' %}">Forgot your password?</a>
+      </p>
+      <p class="auth-foot">
+        New to SkillSwap? <a href="{% url 'register' %}">Create an account</a>
+      </p>
+    </div>
+  </div>
+{% endblock %}

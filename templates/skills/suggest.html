@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Suggest a skill — SkillSwap{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <span class="eyebrow">Catalogue</span>
+    <h1>Suggest a skill</h1>
+    <p class="lede">Can't find a skill? Suggest it — an administrator will review it
+    before it joins the catalogue.</p>
+  </div>
+
+  {% if submitted %}
+    <div class="msg success">Thanks — your suggestion is awaiting review.</div>
+  {% endif %}
+
+  <div class="form-card">
+    <form method="post" class="stack">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="btn btn-primary" type="submit">Submit suggestion</button>
+    </form>
+  </div>
+
+  <p style="margin-top:var(--space-5)"><a class="btn btn-ghost" href="{% url 'skill_catalogue' %}">← Back to the catalogue</a></p>
+{% endblock %}

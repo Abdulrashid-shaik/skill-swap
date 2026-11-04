@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Reschedule session — SkillSwap{% endblock %}
+{% block content %}
+  <h1>Reschedule: {{ session.title }}</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p>
+      <button class="btn btn-primary" type="submit">Save new time</button>
+      <a class="btn btn-secondary" href="{% url 'session_list' session.exchange.pk %}">Cancel</a>
+    </p>
+  </form>
+{% endblock %}

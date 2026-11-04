@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual environment
+.venv/
+venv/
+# Django
+db.sqlite3
+db.sqlite3-wal
+db.sqlite3-shm
+/staticfiles/
+/media/
+
+# Secrets — never commit real values
+.env
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/

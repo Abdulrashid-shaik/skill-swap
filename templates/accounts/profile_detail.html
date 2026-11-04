@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}{{ profile.full_name|default:profile_user.email }} — SkillSwap{% endblock %}
+{% block content %}
+  <div class="profile-head">
+    {% if profile.avatar %}
+      <img class="avatar avatar-lg" src="{{ profile.avatar.url }}" alt="">
+    {% else %}
+      <span class="avatar-fallback avatar-lg">{{ profile.full_name|default:profile_user.email|first|upper }}</span>
+    {% endif %}
+    <div>
+      <h1>{{ profile.full_name|default:"Member" }}</h1>
+      <p class="muted" style="margin:0">{{ profile_user.email }}</p>
+      {% if profile.location %}<span class="meta">{{ profile.location }}</span>{% endif %}
+    </div>
+  </div>
+
+  {% if profile.bio %}<p>{{ profile.bio }}</p>{% endif %}
+
+  <dl class="stats">
+    <div>
+      <dt>Completed exchanges</dt>
+      <dd>{{ profile.completed_exchanges }}</dd>
+    </div>
+    <div>
+      <dt>Rating</dt>
+      <dd>{{ profile.rating_avg }} <span class="meta">({{ profile.rating_count }})</span></dd>
+    </div>
+    {% if profile.experience_level %}
+    <div>
+      <dt>Experience</dt>
+      <dd style="font-size:1.1rem">{{ profile.get_experience_level_display }}</dd>
+    </div>
+    {% endif %}
+    <div>
+      <dt>Member since</dt>
+      <dd style="font-size:1.1rem">{{ profile_user.date_joined|date:"M Y" }}</dd>
+    </div>
+  </dl>
+
+  {% if is_own %}
+    <div class="btn-row" style="margin-bottom: var(--space-6)">
+      <a class="btn btn-primary" href="{% url 'settings' %}">Edit profile</a>
+      <a class="btn btn-secondary" href="{% url 'my_skills' %}">My skills</a>
+      <a class="btn btn-danger" href="{% url 'deactivate' %}">Deactivate account</a>
+    </div>
+  {% else %}
+    <div class="btn-row" style="margin-bottom: var(--space-6)">
+      {% if is_blocked %}
+        <form method="post" action="{% url 'unblock_user' profile_user.pk %}">
+          {% csrf_token %}<button class="btn btn-secondary" type="submit">Unblock</button>
+        </form>
+      {% else %}
+        <form method="post" action="{% url 'block_user' profile_user.pk %}">
+          {% csrf_token %}<button class="btn btn-secondary" type="submit">Block</button>
+        </form>
+      {% endif %}
+      <a class="btn btn-danger" href="{% url 'report_user' profile_user.pk %}">Report</a>
+    </div>
+  {% endif %}
+
+  <h2>Reviews</h2>
+  {% for review in reviews %}
+    <div class="card" style="margin-bottom: var(--space-3)">
+      <div style="display:flex; align-items:center; gap:var(--space-3); margin-bottom:var(--space-2)">
+        <span class="badge badge-brand">{{ review.rating }}/5</span>
+        <strong>{{ review.reviewer.profile.full_name|default:review.reviewer.email }}</strong>
+        <span class="meta" style="margin-left:auto">{{ review.created_at|date:"M Y" }}</span>
+      </div>
+      {% if review.feedback %}<p style="margin:0">{{ review.feedback }}</p>{% endif %}
+    </div>
+  {% empty %}
+    <div class="empty-state">
+      <p style="margin:0">No reviews yet.</p>
+    </div>
+  {% endfor %}
+{% endblock %}

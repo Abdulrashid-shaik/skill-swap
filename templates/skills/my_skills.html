@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}My skills — SkillSwap{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <span class="eyebrow">Your profile</span>
+    <h1>My skills</h1>
+    <p class="lede">List a skill you can teach, or one you want to learn. Matches are
+    built from both lists.</p>
+  </div>
+
+  <div class="grid grid-2">
+    <div>
+      <h2>Skills I can teach</h2>
+      <ul class="skill-list">
+        {% for item in offers %}
+          <li>
+            <span><span class="badge badge-teach">Teach</span> &nbsp;{{ item.skill.name }}{% if item.proficiency %} · {{ item.get_proficiency_display }}{% endif %}</span>
+            <form method="post" action="{% url 'remove_user_skill' item.pk %}">
+              {% csrf_token %}<button class="btn btn-danger btn-sm" type="submit">Remove</button>
+            </form>
+          </li>
+        {% empty %}<li class="muted">None yet.</li>{% endfor %}
+      </ul>
+    </div>
+
+    <div>
+      <h2>Skills I want to learn</h2>
+      <ul class="skill-list">
+        {% for item in wants %}
+          <li>
+            <span><span class="badge badge-learn">Learn</span> &nbsp;{{ item.skill.name }}</span>
+            <form method="post" action="{% url 'remove_user_skill' item.pk %}">
+              {% csrf_token %}<button class="btn btn-danger btn-sm" type="submit">Remove</button>
+            </form>
+          </li>
+        {% empty %}<li class="muted">None yet.</li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <h2 style="margin-top: var(--space-6)">Add a skill</h2>
+  <div class="form-card">
+    <form method="post" class="stack">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="btn btn-primary" type="submit">Add skill</button>
+    </form>
+  </div>
+
+  <p class="btn-row" style="margin-top: var(--space-5)">
+    <a class="btn btn-secondary" href="{% url 'skill_catalogue' %}">Browse the catalogue</a>
+    <a class="btn btn-ghost" href="{% url 'suggest_skill' %}">Suggest a new skill</a>
+  </p>
+{% endblock %}

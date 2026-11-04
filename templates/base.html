@@ -1,0 +1,161 @@
+{% load assets %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>{% block title %}SkillSwap{% endblock %}</title>
+  <script>
+    // Run before paint: flag JS (enables reveal animation) + apply saved theme.
+    (function () {
+      document.documentElement.classList.add('js');
+      try {
+        var t = localStorage.getItem('skillswap-theme');
+        if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+  {% inline_css %}
+</head>
+<body>
+  <div class="announce">
+    <div class="container">
+      <span>✦ SkillSwap is non-monetary — trade skills, never money.</span>
+      {% if not user.is_authenticated %}<a href="{% url 'register' %}">Join free →</a>{% endif %}
+    </div>
+  </div>
+
+  {% with url_name=request.resolver_match.url_name %}
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="{% url 'home' %}">
+        <span class="brand-mark">S</span>
+        <span>SkillSwap</span>
+      </a>
+      <nav class="nav-links">
+        {% if user.is_authenticated %}
+          <a href="{% url 'discover' %}" class="{% if url_name == 'discover' or url_name == 'member_detail' %}active{% endif %}">Discover</a>
+          <a href="{% url 'exchange_list' %}" class="{% if url_name == 'exchange_list' or url_name == 'exchange_detail' %}active{% endif %}">Exchanges</a>
+          <a href="{% url 'requests_received' %}" class="{% if url_name == 'requests_received' or url_name == 'requests_sent' %}active{% endif %}">Requests</a>
+          <a href="{% url 'my_skills' %}" class="{% if url_name == 'my_skills' %}active{% endif %}">My skills</a>
+          <a href="{% url 'notification_list' %}" class="{% if url_name == 'notification_list' %}active{% endif %}">Alerts{% if unread_notifications %}<span class="nav-badge">{{ unread_notifications }}</span>{% endif %}</a>
+          <a href="{% url 'profile' %}" class="{% if url_name == 'profile' or url_name == 'settings' %}active{% endif %}">Profile</a>
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode" title="Toggle theme"><span class="sun">☀</span><span class="moon">☾</span></button>
+          <form method="post" action="{% url 'logout' %}" class="nav-form">
+            {% csrf_token %}<button class="btn btn-secondary btn-sm" type="submit">Sign out</button>
+          </form>
+        {% else %}
+          <a href="{% url 'login' %}" class="{% if url_name == 'login' %}active{% endif %}">Sign in</a>
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode" title="Toggle theme"><span class="sun">☀</span><span class="moon">☾</span></button>
+          <a class="btn btn-primary btn-sm" href="{% url 'register' %}">Get started</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+  {% endwith %}
+
+  {% block main %}
+  <main class="container">
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="msg {{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+  {% endblock %}
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="foot-brand">
+          <a class="brand" href="{% url 'home' %}">
+            <span class="brand-mark">S</span>
+            <span>SkillSwap</span>
+          </a>
+          <p>Learn anything by teaching what you know — a fair, non-monetary skill exchange built on mutual matches.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="{% url 'home' %}">Home</a>
+          <a href="{% url 'skill_catalogue' %}">Skill catalogue</a>
+          {% if user.is_authenticated %}
+            <a href="{% url 'discover' %}">Discover partners</a>
+            <a href="{% url 'my_skills' %}">My skills</a>
+          {% else %}
+            <a href="{% url 'register' %}">Get started</a>
+          {% endif %}
+        </div>
+        <div class="footer-col">
+          <h4>Account</h4>
+          {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}">Profile</a>
+            <a href="{% url 'settings' %}">Settings</a>
+            <a href="{% url 'notification_list' %}">Notifications</a>
+          {% else %}
+            <a href="{% url 'login' %}">Sign in</a>
+            <a href="{% url 'register' %}">Create account</a>
+            <a href="{% url 'password_reset' %}">Reset password</a>
+          {% endif %}
+        </div>
+        <div class="footer-col">
+          <h4>How it works</h4>
+          <a href="{% url 'home' %}#how">The exchange</a>
+          <a href="{% url 'home' %}#principles">Our principles</a>
+          <a href="{% url 'home' %}#faq">FAQ</a>
+        </div>
+      </div>
+      <div class="footer-bar">
+        <span>© SkillSwap. A non-monetary skill exchange.</span>
+        <span class="chips">
+          <span class="badge badge-success"><span class="dot"></span>No payments</span>
+          <span class="badge badge-info"><span class="dot"></span>Mutual matching</span>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <button class="to-top" type="button" data-to-top aria-label="Back to top" title="Back to top">↑</button>
+
+  <script>
+    (function () {
+      // Theme toggle
+      function current() { return document.documentElement.getAttribute('data-theme') || 'light'; }
+      document.querySelectorAll('[data-theme-toggle]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var next = current() === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          try { localStorage.setItem('skillswap-theme', next); } catch (e) {}
+        });
+      });
+
+      // Scroll-reveal
+      var items = document.querySelectorAll('.reveal');
+      var revealAll = function () { items.forEach(function (el) { el.classList.add('in'); }); };
+      if ('IntersectionObserver' in window && items.length) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+          });
+        }, { rootMargin: '0px 0px -8% 0px' });
+        items.forEach(function (el) { io.observe(el); });
+        // Safety net: never leave content stranded if the observer misbehaves.
+        window.addEventListener('load', function () { setTimeout(revealAll, 1800); });
+      } else {
+        revealAll();
+      }
+
+      // Back to top
+      var top = document.querySelector('[data-to-top]');
+      if (top) {
+        var onScroll = function () { top.classList.toggle('show', window.scrollY > 500); };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+        top.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+      }
+    })();
+  </script>
+</body>
+</html>

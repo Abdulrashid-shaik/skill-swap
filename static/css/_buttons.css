@@ -1,0 +1,76 @@
+/* Buttons — solid gradient primary, clean outline secondary, ghost, sizes. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0.6rem 1.15rem;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform var(--t-fast), box-shadow var(--t), background var(--t), color var(--t), border-color var(--t);
+}
+.btn:active { transform: translateY(1px); }
+.btn:focus-visible { outline: none; box-shadow: var(--ring); }
+.btn:disabled, .btn[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; }
+
+.btn-primary {
+  background: var(--gradient-brand);
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+.btn-primary:hover { color: #fff; box-shadow: var(--shadow-brand); transform: translateY(-1px); }
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+.btn-secondary:hover { background: var(--surface-3); border-color: var(--text-subtle); color: var(--text); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--brand-700);
+}
+.btn-ghost:hover { background: var(--brand-50); color: var(--brand-700); }
+
+.btn-danger {
+  background: var(--surface);
+  color: var(--danger);
+  border-color: var(--danger-bd);
+}
+.btn-danger:hover { background: var(--danger-bg); color: var(--danger); }
+
+.btn-white {
+  background: #fff;
+  color: var(--brand-700);
+}
+.btn-white:hover { background: rgba(255, 255, 255, 0.9); color: var(--brand-700); }
+
+/* for use on dark surfaces (hero / bands) */
+.btn-outline-light {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+.btn-outline-light:hover { background: rgba(255, 255, 255, 0.14); color: #fff; border-color: rgba(255, 255, 255, 0.6); }
+
+/* sizes */
+.btn-lg { padding: 0.8rem 1.6rem; font-size: 1.02rem; border-radius: var(--radius-lg); }
+.btn-sm { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+.btn-block { width: 100%; }
+
+/* text-only button that matches link styling (used in nav sign-out) */
+.linkbtn {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}

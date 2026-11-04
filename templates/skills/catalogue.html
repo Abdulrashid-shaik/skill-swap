@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Browse skills — SkillSwap{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <span class="eyebrow">Catalogue</span>
+    <h1>Browse skills offered by members</h1>
+    <p class="lede">Explore the skills available in the community.</p>
+  </div>
+
+  <form method="get" class="filter-bar">
+    <input type="text" name="q" value="{{ query }}" placeholder="Search skills…">
+    <select name="category">
+      <option value="">All categories</option>
+      {% for category in categories %}
+        <option value="{{ category.slug }}" {% if category.slug == category_slug %}selected{% endif %}>{{ category.name }}</option>
+      {% endfor %}
+    </select>
+    <button class="btn btn-primary" type="submit">Search</button>
+  </form>
+
+  <div class="grid auto-grid">
+    {% for skill in skills %}
+      <div class="card card-hover">
+        <div style="display:flex; align-items:center; gap:var(--space-3); margin-bottom:var(--space-2)">
+          <strong>{{ skill.name }}</strong>
+          <span class="badge" style="margin-left:auto">{{ skill.category.name }}</span>
+        </div>
+        {% if skill.description %}<p class="muted" style="margin:0">{{ skill.description }}</p>{% endif %}
+      </div>
+    {% empty %}
+      <div class="empty-state" style="grid-column: 1 / -1;">
+        <div class="empty-icon">🔍</div>
+        <h3>No skills found</h3>
+        <p>Try a different search, or suggest a new skill.</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  <p class="btn-row" style="margin-top: var(--space-6)">
+    <a class="btn btn-secondary" href="{% url 'my_skills' %}">Manage my skills</a>
+    <a class="btn btn-ghost" href="{% url 'suggest_skill' %}">Suggest a skill</a>
+  </p>
+{% endblock %}

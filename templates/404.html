@@ -1,0 +1,21 @@
+
+
+{% extends "base.html" %}
+
+{% block title %}Page not found · SkillSwap{% endblock %}
+
+{% block content %}
+<section class="error-page" style="text-align:center; padding:4rem 0; max-width:40rem; margin:0 auto;">
+  <p class="error-code" style="font-size:3rem; font-weight:700; margin:0;">404</p>
+  <h1>We couldn't find that page</h1>
+  <p>The link may be broken, or the page may have moved. Let's get you back on track.</p>
+  <p style="margin-top:1.5rem;">
+    <a class="btn btn-primary" href="{% url 'home' %}">Back to home</a>
+    {% if user.is_authenticated %}
+      <a class="btn btn-secondary" href="{% url 'my_skills' %}">My skills</a>
+    {% else %}
+      <a class="btn btn-secondary" href="{% url 'skill_catalogue' %}">Browse skills</a>
+    {% endif %}
+  </p>
+</section>
+{% endblock %}
