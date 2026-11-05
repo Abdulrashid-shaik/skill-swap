@@ -7,9 +7,20 @@ re-validation used when creating and accepting exchange requests (P5).
 """
 from collections import defaultdict
 
+from django.db.models import Q
+from django.utils import timezone
+
 from apps.accounts.models import User
 from apps.moderation.services import blocked_pair_ids
 from apps.skills.models import Skill, SkillKind, SkillStatus, UserSkill
+
+
+def _not_currently_suspended_q():
+    """Q matching users who are NOT under an active suspension: either not
+    suspended, or suspended with a ``suspended_until`` that has already passed
+    (expired). Mirrors User.is_currently_suspended at the queryset level so
+    discovery honors auto-expiry (R12) instead of hiding reinstated members."""
+    return Q(is_suspended=False) | Q(suspended_until__lte=timezone.now())
 
 
 def _skill_ids(user, kind):
@@ -30,7 +41,7 @@ def discoverable_users_qs(user):
     not self, not blocked (either direction)."""
     return (
         User.objects.filter(
-            is_active=True, is_deactivated=False, is_suspended=False
+            _not_currently_suspended_q(), is_active=True, is_deactivated=False
         )
         .exclude(pk=user.pk)
         .exclude(pk__in=blocked_pair_ids(user))
@@ -82,6 +93,7 @@ def get_matches(user, *, q=None, category=None, proficiency=None):
         UserSkill.objects.filter(
             kind=SkillKind.WANT, is_active=True,
             skill_id__in=my_offers, user__in=candidates,
+            skill__status=SkillStatus.APPROVED, skill__is_active=True,
         ).values_list("user_id", flat=True)
     )
     offer_my_want_ids = set(

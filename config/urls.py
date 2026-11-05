@@ -12,6 +12,13 @@ from django.views.generic import TemplateView
 from django.views.static import serve
 
 
+# Branded, content-negotiated error handlers (HTML pages / JSON for API).
+handler400 = "apps.common.errors.handler400"
+handler403 = "apps.common.errors.handler403"
+handler404 = "apps.common.errors.handler404"
+handler500 = "apps.common.errors.handler500"
+
+
 def health(request):
     """Lightweight liveness check (no database access)."""
     return JsonResponse({"status": "ok"})

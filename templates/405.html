@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Method not allowed · SkillSwap{% endblock %}
+
+{% block content %}
+<section class="error-page" style="text-align:center; padding:4rem 0; max-width:40rem; margin:0 auto;">
+  <p class="error-code" style="font-size:3rem; font-weight:700; margin:0;">405</p>
+  <h1>That action isn't allowed here</h1>
+  <p>The page was reached with a method it doesn't support. Please go back and use the on-page controls.</p>
+  <p style="margin-top:1.5rem;">
+    <a class="btn btn-primary" href="{% url 'home' %}">Back to home</a>
+  </p>
+</section>
+{% endblock %}

@@ -10,8 +10,15 @@ venv/
 db.sqlite3
 db.sqlite3-wal
 db.sqlite3-shm
+test_db.sqlite3
+test_db.sqlite3-wal
+test_db.sqlite3-shm
 /staticfiles/
 /media/
+
+# Logs
+logs/
+*.log
 
 # Secrets — never commit real values
 .env
@@ -21,3 +28,4 @@ db.sqlite3-shm
 *.swp
 .idea/
 .vscode/
+project-explanation.md

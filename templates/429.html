@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Too many requests · SkillSwap{% endblock %}
+
+{% block content %}
+<section class="error-page" style="text-align:center; padding:4rem 0; max-width:40rem; margin:0 auto;">
+  <p class="error-code" style="font-size:3rem; font-weight:700; margin:0;">429</p>
+  <h1>You're going a little fast</h1>
+  <p>Too many requests in a short time. Please wait a moment and try again{% if retry_after %} in about {{ retry_after }} second{{ retry_after|pluralize }}{% endif %}.</p>
+  <p style="margin-top:1.5rem;">
+    <a class="btn btn-primary" href="{% url 'home' %}">Back to home</a>
+  </p>
+</section>
+{% endblock %}

@@ -92,6 +92,32 @@ class Exchange(TimeStampedModel):
         return f"Exchange<{self.participant_a} / {self.participant_b}> ({self.status})"
 
 
+class OngoingExchangeParticipant(models.Model):
+    """DB-enforced per-user concurrency guard: a user may be in at most ONE
+    ONGOING exchange at a time (the documented per-user rule — see R15).
+
+    One row is created per participant when an exchange starts (on accept) and
+    removed when the exchange completes or is cancelled. The ``unique(user)``
+    constraint (via OneToOneField) is the *actual* guarantee on SQLite, where
+    ``select_for_update()`` is a no-op: two concurrent accepts that would place
+    the same user in a second ONGOING exchange collide here and the loser gets
+    an IntegrityError (translated to a BusinessRuleError), rather than both
+    succeeding. See apps/exchanges/services.accept_request."""
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="ongoing_exchange_lock",
+    )
+    exchange = models.ForeignKey(
+        Exchange, on_delete=models.CASCADE, related_name="participant_locks"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"ongoing-lock<user={self.user_id} exchange={self.exchange_id}>"
+
+
 class ExchangeConfirmation(TimeStampedModel):
     """One row per participant who has confirmed completion. The exchange only
     completes when BOTH participants have a row (see services.confirm_exchange).

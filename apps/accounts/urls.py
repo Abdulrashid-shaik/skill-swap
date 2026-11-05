@@ -6,11 +6,11 @@ from . import views
 urlpatterns = [
     # Registration & session
     path("register/", views.register, name="register"),
-    path("login/", auth_views.LoginView.as_view(), name="login"),
+    path("login/", views.ThrottledLoginView.as_view(), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
 
     # Password reset (console email backend in dev — see R7)
-    path("password-reset/", auth_views.PasswordResetView.as_view(),
+    path("password-reset/", views.ThrottledPasswordResetView.as_view(),
          name="password_reset"),
     path("password-reset/done/", auth_views.PasswordResetDoneView.as_view(),
          name="password_reset_done"),

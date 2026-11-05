@@ -43,7 +43,12 @@ ONGOING ──(dual confirmation)──► COMPLETED
 
 - Exactly two participants. One agreed skill-pair (R16).
 - `COMPLETED`/`CANCELLED` are terminal and not reopened via ordinary requests.
-- Guard: avoid a second concurrent `ONGOING` for the same participant+skill pair (R15).
+- **One ONGOING exchange per user (R15).** A user may be in at most **one** `ONGOING`
+  exchange at a time, across *all* partners. Enforced for **both** participants at accept
+  time, inside an atomic transaction, and guaranteed by the `OngoingExchangeParticipant`
+  unique(`user`) constraint — the real backstop on SQLite, where `select_for_update` is a
+  no-op. `transaction_mode=IMMEDIATE` serializes concurrent accepts so one wins cleanly and
+  the other is rejected (not a deadlock). The slot is released on completion/cancellation.
 
 ## 4. Dual completion confirmation (M6 — critical)
 
@@ -107,3 +112,39 @@ Created on: request received/accepted/rejected/cancelled, new message, upcoming 
 ## 9. SQLite transaction discipline
 
 Wrap every multi-row state change in `transaction.atomic()` and keep it short: request-accept (+ exchange create), exchange confirm/complete, review create (+ aggregate update), session reschedule. Enable WAL mode for read/write concurrency.
+
+## Account suspension enforcement (M12 / R12)
+
+Suspension is enforced at every layer — not the frontend:
+
+- **Login:** `SuspensionAwareModelBackend` refuses authentication for a currently-suspended
+  account (staff exempt, so admins keep access).
+- **Existing sessions:** `SuspensionMiddleware` blocks suspended, non-staff users on every
+  request with a branded **403** (JSON for `/api/`); they may still log out.
+- **Services / API:** `ensure_not_suspended()` guards create/accept request and message send;
+  the DRF `IsNotSuspended` permission backs the API.
+- **Discovery:** suspended users are hidden; the queryset honors `suspended_until`.
+- **Auto-expiry:** a `suspended_until` in the past clears lazily on the user's next
+  auth/request (`lift_suspension_if_expired`) — no scheduler needed.
+
+`is_currently_suspended` is the single source of truth: `is_suspended` is true **and** any
+`suspended_until` is still in the future.
+
+## Rate limiting
+
+Abuse-prone endpoints are rate-limited server-side (`apps/common/ratelimit.py`), returning
+**HTTP 429** with a `Retry-After` header once a fixed window is exceeded:
+
+| Endpoint | Limit |
+|---|---|
+| Login | 30 / 5 min per IP **and** 8 / 5 min per email |
+| Registration | 10 / hour per IP |
+| Password reset | 10 / hour per IP + 5 / hour per email |
+| Chat send | 30 / min per account |
+| Report submit | 5 / hour per account |
+| API request-create / message / report | per-account windows (same mechanism) |
+
+Counts use an atomic `F()+1` DB update (not `cache.incr()`, which is non-atomic), so the
+limiter fails **closed** under concurrency. Client IP uses `REMOTE_ADDR` unless
+`RATELIMIT_TRUSTED_PROXY_COUNT > 0` (a spoofable `X-Forwarded-For` is ignored by default).
+Login/password-reset responses stay uniform to avoid account enumeration.

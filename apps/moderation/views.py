@@ -5,6 +5,7 @@ from django.views.decorators.http import require_POST
 
 from apps.accounts.models import User
 from apps.common.exceptions import BusinessRuleError
+from apps.common.ratelimit import LIMITS, by_user, rate_limit
 
 from . import services
 from .forms import ReportForm
@@ -32,6 +33,7 @@ def unblock(request, pk):
 
 
 @login_required
+@rate_limit("report", LIMITS["report"], ident=by_user, methods=("POST",))
 def report(request, pk):
     target = get_object_or_404(User, pk=pk)
     if request.method == "POST":

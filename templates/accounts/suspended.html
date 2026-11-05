@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Account suspended · SkillSwap{% endblock %}
+
+{% block content %}
+<section class="error-page" style="text-align:center; padding:4rem 0; max-width:40rem; margin:0 auto;">
+  <p class="error-code" style="font-size:3rem; font-weight:700; margin:0;">403</p>
+  <h1>Your account is suspended</h1>
+  <p>
+    While your account is suspended you can't use SkillSwap features.
+    {% if suspended_until %}This suspension is scheduled to lift on {{ suspended_until }}.{% endif %}
+    If you think this is a mistake, please contact support.
+  </p>
+  <form method="post" action="{% url 'logout' %}" style="margin-top:1.5rem;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-secondary">Log out</button>
+  </form>
+</section>
+{% endblock %}

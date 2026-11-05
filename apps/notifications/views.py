@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
 from .models import Notification
@@ -20,7 +21,14 @@ def mark_read(request, pk):
         note.is_read = True
         note.read_at = timezone.now()
         note.save(update_fields=["is_read", "read_at"])
-    return redirect(note.target_url or "notification_list")
+    # Only follow a target_url that stays on this site — never an absolute
+    # off-site URL — so a crafted notification can't become an open redirect.
+    target = note.target_url
+    if target and url_has_allowed_host_and_scheme(
+        target, allowed_hosts={request.get_host()}
+    ):
+        return redirect(target)
+    return redirect("notification_list")
 
 
 @login_required

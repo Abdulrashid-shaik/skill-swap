@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import FileExtensionValidator
 from django.db import models
+from django.utils import timezone
 
 from apps.common.models import TimeStampedModel
 from .validators import validate_avatar_size
@@ -61,6 +62,33 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
+    @property
+    def is_currently_suspended(self) -> bool:
+        """True iff the account is under an *active* suspension. A suspension
+        with a ``suspended_until`` in the past has expired and no longer counts
+        (R12 auto-expiry). ``suspended_until=None`` means an indefinite
+        suspension. Deactivation is a separate state (enforced via is_active)."""
+        if not self.is_suspended:
+            return False
+        if self.suspended_until is not None and self.suspended_until <= timezone.now():
+            return False
+        return True
+
+    def lift_suspension_if_expired(self) -> bool:
+        """Persist auto-expiry: clear a suspension whose ``suspended_until`` has
+        passed, so the member regains access without admin action (R12). Called
+        lazily at authentication and request time. Returns True if it cleared."""
+        if (
+            self.is_suspended
+            and self.suspended_until is not None
+            and self.suspended_until <= timezone.now()
+        ):
+            self.is_suspended = False
+            self.suspended_until = None
+            self.save(update_fields=["is_suspended", "suspended_until"])
+            return True
+        return False
 
 
 class ExperienceLevel(models.TextChoices):

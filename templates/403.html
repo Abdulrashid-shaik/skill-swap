@@ -1,1 +1,14 @@
-<h1> bad request</h1>
+{% extends "base.html" %}
+
+{% block title %}Permission denied · SkillSwap{% endblock %}
+
+{% block content %}
+<section class="error-page" style="text-align:center; padding:4rem 0; max-width:40rem; margin:0 auto;">
+  <p class="error-code" style="font-size:3rem; font-weight:700; margin:0;">403</p>
+  <h1>You don't have permission to do that</h1>
+  <p>This action or page isn't available to your account. If you reached this by mistake, head back and try a different route.</p>
+  <p style="margin-top:1.5rem;">
+    <a class="btn btn-primary" href="{% url 'home' %}">Back to home</a>
+  </p>
+</section>
+{% endblock %}

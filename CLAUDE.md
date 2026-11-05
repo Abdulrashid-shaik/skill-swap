@@ -28,10 +28,23 @@ Python 3.12+, Django 5.2 LTS, DRF, Django ORM · Django Templates + vanilla JS +
 - Keep docs updated as the source of truth; do not copy the full brief into every file. Do not create skills/subagents/hooks/MCP unless they give a clear, approved benefit.
 
 ## Status
-**Phases 0–12 built; P13–P15 in place (API reserved, deployment docs, hardening).**
+**Phases 0–12 built; P13–P15 implemented (DRF API live, deployment docs, hardening).**
 Apps: common, accounts, skills, discovery, moderation, notifications, exchanges,
-messaging, scheduling, reviews, integrations. 85 tests passing; `manage.py check`
-and `check --deploy` clean.
+messaging, scheduling, reviews, integrations. **148 tests passing**; `manage.py
+check` and `check --deploy` clean.
+
+**Production-hardening pass (see docs/DECISIONS.md build deviations D-E…D-J):**
+- **Rate limiting** — atomic DB-backed fixed-window limiter (`apps/common/ratelimit.py`)
+  on login, registration, password-reset, chat send, report submit; trusted-proxy-aware
+  client IP; 429 + `Retry-After`. Deliberately not `cache.incr()` (non-atomic).
+- **Suspension** fully enforced — auth backend (login) + `SuspensionMiddleware`
+  (existing sessions) + DRF permission + service guards; `suspended_until` auto-expiry
+  is lazy (no scheduler). Staff exempt.
+- **One ONGOING exchange per user** (R15) — DB-level `OngoingExchangeParticipant`
+  unique(user) + `transaction_mode=IMMEDIATE`; race-safe on SQLite.
+- **Logging** — app/security/error streams; secrets/PII never logged.
+- **Errors** — branded 400/403/404/405/429/500 (JSON for `/api/`); standalone 500.
+- **DRF API** at `/api/v1/` — focused core over the service layer (no logic dup).
 
 - Full loop works: register → skills → **mutual match** → request → accept →
   exchange workspace → **dual-confirm completion** → chat → sessions → review;
